@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Pesan Cinta untuk Stranger</title>
+    <style>
+        body {
+            background: #fff0f5;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .love-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(255, 105, 140, 0.3);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            border: 2px solid #ff6b8b;
+        }
+        .heart {
+            color: #ff6b8b;
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        #message {
+            min-height: 150px;
+            text-align: left;
+            line-height: 1.8;
+            margin: 20px 0;
+            padding: 10px;
+            border-top: 1px dashed #ffb8c6;
+            border-bottom: 1px dashed #ffb8c6;
+        }
+        input {
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+            width: 80%;
+        }
+        button {
+            background: linear-gradient(to right, #ff6b8b, #ff8e9e);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 107, 140, 0.4);
+        }
+        .signature {
+            font-style: italic;
+            color: #ff6b8b;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        #whatsapp {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="love-card">
+        <div class="heart">❤️</div>
+        <h2>Untuk <span id="name">Stranger</span></h2>
+        <input type="text" id="inputName" placeholder="Tulis nama panggilan..." oninput="updateName(this.value)" />
+        <div id="message"></div>
+        <button onclick="typeMessage()">Buka Pesan</button>
+        <button id="whatsapp" onclick="shareWhatsApp()">Kirim via WhatsApp</button>
+        <div class="signature">Indra Abdul Hakim</div>
+    </div>
+    <audio id="bgm" loop>
+        <source src="aboutyou.mp3" type="audio/mpeg">
+    </audio>
+    <script>
+        const messages = [
+            "Setiap hari bersamamu adalah halaman terindah dalam buku hidupku.",
+            "Di antara miliaran bintang, kaulah yang paling terang menyinari hidupku.",
+            "Aku memilihmu hari ini, besok, dan selamanya."
+        ];
+
+        function updateName(val) {
+            document.getElementById('name').textContent = val || 'Stranger';
+        }
+
+        function typeMessage() {
+            const audio = document.getElementById('bgm');
+            audio.play();
+            const messageEl = document.getElementById('message');
+            const btn = document.querySelector('button');
+            const waBtn = document.getElementById('whatsapp');
+            btn.style.display = 'none';
+            messageEl.innerHTML = '';
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            let i = 0;
+            const typing = setInterval(() => {
+                if (i < randomMessage.length) {
+                    messageEl.innerHTML += randomMessage.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typing);
+                    btn.textContent = 'Pesan Lain';
+                    btn.style.display = 'block';
+                    waBtn.style.display = 'inline-block';
+                }
+            }, 50);
+        }
+
+        function shareWhatsApp() {
+            const name = document.getElementById('name').textContent;
+            const url = window.location.href;
+            const text = `Hai ${name}, aku punya sesuatu untukmu 💌: ${url}`;
+            const waUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+            window.open(waUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
